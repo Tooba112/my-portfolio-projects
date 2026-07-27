@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskFlow Pro | To-Do List Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style(1).css" />
+</head>
+<body>
+
+  <!-- ========== TOAST NOTIFICATION ========== -->
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+  <!-- ========== DELETE CONFIRMATION MODAL ========== -->
+  <div id="confirmModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-box">
+      <div class="modal-icon">🗑️</div>
+      <h3 id="modalTitle">Delete Task?</h3>
+      <p>This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button id="cancelDelete" class="btn-modal-cancel">Cancel</button>
+        <button id="confirmDelete" class="btn-modal-confirm">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MAIN APP ========== -->
+  <main class="app-wrapper">
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-top">
+        <div class="brand">
+          <span class="brand-icon">✦</span>
+          <h1 class="brand-name">TaskFlow Pro</h1>
+        </div>
+        <p class="header-date" id="headerDate"></p>
+        <p class="header-subtitle">Organize your daily tasks with ease.</p>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="stat-number" id="statTotal">0</span>
+          <span class="stat-label">Total Tasks</span>
+        </div>
+        <div class="stat-card completed">
+          <span class="stat-number" id="statCompleted">0</span>
+         <span class="stat-label">Completed</span>
+        </div>
+        <div class="stat-card remaining">
+          <span class="stat-number" id="statRemaining">0</span>
+         <span class="stat-label">Remaining</span>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="progress-wrap" aria-label="Task completion progress">
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <span class="progress-label" id="progressLabel">0% Complete</span>
+      </div>
+    </header>
+
+    <!-- ========== ADD TASK FORM ========== -->
+    <section class="glass-card add-card" aria-label="Add new task">
+      <h2 class="card-title">Create a New Task</h2>
+
+      <div class="form-row">
+        <!-- Task input -->
+        <div class="input-group full">
+          <label for="taskInput" class="sr-only">Task name</label>
+          <span class="input-icon">📝</span>
+          <input
+            type="text"
+            id="taskInput"
+            class="text-input"
+           placeholder="Enter your task here..."
+            maxlength="120"
+            autocomplete="off"
+          />
+        </div>
+      </div>
+
+      <div class="form-row two-col">
+        <!-- Priority -->
+        <div class="input-group">
+          <label for="prioritySelect" class="field-label">Priority</label>
+          <div class="select-wrap">
+            <select id="prioritySelect" class="select-input">
+              <option value="medium">🟡 Medium</option>
+              <option value="high">🔴 High</option>
+              <option value="low">🟢 Low</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Due Date -->
+        <div class="input-group">
+          <label for="dueDateInput" class="field-label">Due Date <span class="optional">(optional)</span></label>
+          <input type="date" id="dueDateInput" class="date-input" />
+        </div>
+      </div>
+
+      <button id="addTaskBtn" class="btn-add" aria-label="Add task">
+        <span class="btn-icon">+</span> Create Task
+      </button>
+    </section>
+
+    <!-- ========== SEARCH & FILTER ========== -->
+    <section class="glass-card controls-card" aria-label="Search and filter tasks">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input
+          type="search"
+          id="searchInput"
+          class="search-input"
+        placeholder="Search your tasks..."
+          autocomplete="off"
+          aria-label="Search tasks"
+        />
+        <button class="clear-search" id="clearSearch" aria-label="Clear search" title="Clear search">✕</button>
+      </div>
+
+      <div class="filter-tabs" role="tablist" aria-label="Filter tasks">
+        <button class="filter-btn active" data-filter="all"       role="tab" aria-selected="true">All</button>
+        <button class="filter-btn"        data-filter="active"    role="tab" aria-selected="false">Active</button>
+        <button class="filter-btn"        data-filter="completed" role="tab" aria-selected="false">Completed</button>
+      </div>
+    </section>
+
+    <!-- ========== TASK LIST ========== -->
+    <section aria-label="Task list">
+      <!-- Empty state -->
+      <div class="empty-state" id="emptyState" hidden>
+        <div class="empty-icon">🌿</div>
+        <h3 class="empty-title">No Tasks Yet</h3>
+        <p class="empty-text" id="emptyText">Create your first task to stay organized and productive.</p>
+      </div>
+
+      <!-- Task items rendered here -->
+      <ul class="task-list" id="taskList" aria-label="Tasks"></ul>
+    </section>
+
+    <!-- Clear completed button -->
+    <div class="bottom-bar" id="bottomBar" hidden>
+      <span class="bottom-hint" id="bottomHint"></span>
+      <button class="btn-clear-completed" id="clearCompletedBtn">Clear Completed</button>
+    </div>
+  <footer class="app-footer">
+   © 2026 TaskFlow Pro • Built with HTML, CSS & JavaScript
+</footer>
+  </main>
+
+  <script src="script(1).js"></script>
+</body>
+</html>
