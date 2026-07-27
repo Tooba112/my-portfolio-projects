@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Developer Tooba — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ====== HEADER / NAV ====== -->
+  <header class="nav-bar">
+    <div class="container nav-inner">
+      <div class="nav-brand">
+        <span class="nav-dot red"></span>
+        <span class="nav-dot yellow"></span>
+        <span class="nav-dot green"></span>
+        <span class="mono nav-title"><span class="violet">&lt;</span>Developer Tooba<span class="violet">/&gt;</span></span>
+      </div>
+      <nav class="nav-links">
+        <a href="#about" class="nav-link">/about</a>
+        <a href="#skills" class="nav-link">/skills</a>
+        <a href="#projects" class="nav-link">/projects</a>
+        <a href="#contact" class="nav-link">/contact</a>
+      </nav>
+      <a href="#contact" class="btn-outline btn-sm">Say hi</a>
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">&#9776;</button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="#about" class="nav-link">/about</a>
+      <a href="#skills" class="nav-link">/skills</a>
+      <a href="#projects" class="nav-link">/projects</a>
+      <a href="#contact" class="nav-link">/contact</a>
+    </div>
+  </header>
+
+  <!-- ====== HERO ====== -->
+  <section class="section hero-section" id="hero">
+    <div class="glow-blob glow-violet" style="top:-100px;left:-80px;width:340px;height:340px"></div>
+    <div class="glow-blob glow-gold" style="top:280px;right:-100px;width:280px;height:280px"></div>
+    <div class="container hero-grid">
+      <div class="hero-left">
+        
+        <h1 class="display-heading reveal" style="transition-delay:0.08s">
+          Hi, I'm <span class="gradient-text">Tooba Bilal</span>.
+        </h1>
+        <p class="hero-sub reveal" style="transition-delay:0.16s">
+          A Computer Science undergraduate who likes turning ideas into working software — one semester, one project at a time.
+        </p>
+        <div class="code-panel reveal" style="transition-delay:0.24s;max-width:420px;margin-top:2rem">
+          <div class="code-bar">
+            <span class="nav-dot red"></span>
+            <span class="nav-dot yellow"></span>
+            <span class="nav-dot green"></span>
+            <span class="mono muted" style="font-size:0.75rem;margin-left:6px">about.js</span>
+          </div>
+          <div class="code-body mono" id="codeTyper"></div>
+        </div>
+        <div class="hero-btns reveal" style="transition-delay:0.32s">
+          <a href="#projects" class="btn-primary">View Projects <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></a>
+          <a href="tooba.cv.pdf" class="btn-outline">Download CV <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+        </div>
+      </div>
+      <div class="hero-right reveal" style="transition-delay:0.2s">
+        <div class="photo-wrap">
+          <div class="photo-frame">
+            <div class="photo-inner">
+              <img src="data:image/webp;base64,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" alt="Tooba" class="photo-img" />
+            </div>
+          </div>
+          <div class="status-chip">
+            <span class="status-dot"></span>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== ABOUT ====== -->
+  <section class="section" id="about">
+    <div class="container two-col">
+      <div class="reveal">
+        <p class="eyebrow">// about-me</p>
+        <h2 class="section-heading">Still early, already building.</h2>
+        <p class="body-text" style="margin-top:1.25rem;max-width:480px">
+          I'm a Computer Science student at COMSATS University Islamabad, currently in my 6th semester.
+         I am passionate about Web Development and enjoy building responsive and user-friendly web applications using HTML, CSS, JavaScript, React, Node.js, Express.js, and MongoDB.
+         I am actively working on academic and personal projects to strengthen my problem-solving and development skills.
+        </p>
+        <div class="info-row">
+          <svg width="18" height="18" fill="none" stroke="var(--violet-400)" stroke-width="2" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 3 3 6 3s6-1 6-3v-5"/></svg>
+          <span class="mono muted" style="font-size:0.88rem">BS Computer Science · COMSATS University Islamabad</span>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:0.12s">
+        <div class="code-panel" style="padding:1.5rem">
+          <p class="mono muted" style="font-size:0.75rem;margin-bottom:1rem">// degree-progress.sh</p>
+          <div class="skill-label-row">
+            <span class="mono" style="font-size:0.8rem">Bachelor's Progress — Semester 6 / 8</span>
+            <span class="mono muted" style="font-size:0.8rem">75%</span>
+          </div>
+          <div class="skill-track"><div class="skill-fill" data-width="75"></div></div>
+          <div class="stat-grid">
+            <div>
+              <p class="display-stat violet">6th</p>
+              <p class="mono muted" style="font-size:0.75rem">Current semester</p>
+            </div>
+            <div>
+              <p class="display-stat gold">2027</p>
+              <p class="mono muted" style="font-size:0.75rem">Expected graduation</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== SKILLS ====== -->
+  <section class="section" id="skills">
+    <div class="container">
+      <div class="reveal">
+        <p class="eyebrow">// skills</p>
+        <h2 class="section-heading">$ ls skills/</h2>
+        <p class="body-text muted" style="margin-top:0.5rem">Tools and languages I reach for most.</p>
+      </div>
+      <div class="skills-grid">
+        <div class="reveal" style="transition-delay:0.05s">
+          <div class="skill-label-row"><span class="mono" style="font-size:0.8rem">HTML & CSS</span><span class="mono muted" style="font-size:0.8rem">85%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
+        </div>
+        <div class="reveal" style="transition-delay:0.10s">
+          <div class="skill-label-row"><span class="mono" style="font-size:0.8rem">Python</span><span class="mono muted" style="font-size:0.8rem">80%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="80"></div></div>
+        </div>
+        <div class="reveal" style="transition-delay:0.15s">
+          <div class="skill-label-row"><span class="mono" style="font-size:0.8rem">JavaScript</span><span class="mono muted" style="font-size:0.8rem">78%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="78"></div></div>
+        </div>
+        <div class="reveal" style="transition-delay:0.15s">
+          <div class="skill-label-row"><span class="mono" style="font-size:0.8rem">Node.js & Express.js</span><span class="mono muted" style="font-size:0.8rem">78%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="78"></div></div>
+        </div>
+        <div class="reveal" style="transition-delay:0.20s">
+          <div class="skill-label-row"><span class="mono" style="font-size:0.8rem">React</span><span class="mono muted" style="font-size:0.8rem">70%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="70"></div></div>
+        </div>
+    
+        </div>
+        <div class="reveal" style="transition-delay:0.30s">
+          <div class="skill-label-row"><span class="mono" style="font-size:0.8rem">NoSQL & DBMS</span><span class="mono muted" style="font-size:0.8rem">75%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="75"></div></div>
+        </div>
+        <div class="reveal" style="transition-delay:0.35s">
+          <div class="skill-label-row"><span class="mono" style="font-size:0.8rem"> Git & GitHub</span><span class="mono muted" style="font-size:0.8rem">80%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="80"></div></div>
+        </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== TIMELINE ====== -->
+  <section class="section" id="timeline">
+    <div class="container">
+      <div class="reveal">
+        <p class="eyebrow">// timeline</p>
+        <h2 class="section-heading">$ git log --oneline</h2>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item reveal" style="transition-delay:0.05s">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <span class="mono gold" style="font-size:0.78rem">2023</span>
+            <h3 class="tl-title">Enrolled — BS Computer Science</h3>
+            <p class="muted" style="font-size:0.9rem">COMSATS University Islamabad</p>
+          </div>
+        </div>
+        <div class="timeline-item reveal" style="transition-delay:0.10s">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <span class="mono gold" style="font-size:0.78rem">2024</span>
+            <h3 class="tl-title">Core CS foundations</h3>
+            <p class="muted" style="font-size:0.9rem">Data Structures, OOP, Discrete Mathematics</p>
+          </div>
+        </div>
+        <div class="timeline-item reveal" style="transition-delay:0.15s">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <span class="mono gold" style="font-size:0.78rem">2025</span>
+            <h3 class="tl-title">Started building for the web</h3>
+            <p class="muted" style="font-size:0.9rem">Developed personal and academic web projects using HTML, CSS, JavaScript and React.</p>
+          </div>
+        </div>
+        <div class="timeline-item reveal last" style="transition-delay:0.20s">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <span class="mono gold" style="font-size:0.78rem">Now</span>
+            <h3 class="tl-title">6th semester — open to internships</h3>
+            <p class="muted" style="font-size:0.9rem">Learning in public, one project at a time</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== PROJECTS ====== -->
+  <section class="section" id="projects">
+    <div class="container">
+      <div class="reveal">
+        <p class="eyebrow">// projects</p>
+        <h2 class="section-heading">$ ls projects/</h2>
+        <p class="body-text muted" style="margin-top:0.5rem">Placeholder entries — swap these for your real work.</p>
+      </div>
+      <div class="projects-grid">
+        <div class="project-card reveal" style="transition-delay:0.05s">
+          <div class="project-thumb"><span class="mono muted" style="font-size:0.78rem">project-one.tsx</span></div>
+          <div class="project-body">
+            <h3 class="project-title">AdFlow Pro</h3>
+            <p class="project-desc">A full-stack service marketplace where clients can hire service providers. Includes authentication, dashboards, gigs, reviews and payments.</p>
+            <div class="tag-row">
+              <span class="chip">React</span>
+              <span class="chip">Node.js</span>
+              <span class="chip">MongoDB</span>
+              <span class="chip">Express</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="proj-link violet">View <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+              <a href="#" class="proj-link muted">Code <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
+            </div>
+          </div>
+        </div>
+        <div class="project-card reveal" style="transition-delay:0.10s">
+          <div class="project-thumb"><span class="mono muted" style="font-size:0.78rem">project-two.py</span></div>
+          <div class="project-body">
+            <h3 class="project-title">Personal Portfolio</h3>
+            <p class="project-desc">Responsive developer portfolio showcasing skills, projects and contact information with modern UI and animations.</p>
+            <div class="tag-row">
+              <span class="chip">HTML</span>
+              <span class="chip">CSS</span>
+              <span class="chip">JavaScript</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="proj-link violet">View <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+              <a href="#" class="proj-link muted">Code <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
+            </div>
+          </div>
+        </div>
+         <div class="project-card reveal" style="transition-delay:0.15s">
+          <div class="project-thumb"><span class="mono muted" style="font-size:0.78rem">project-three.cpp</span></div>
+          <div class="project-body">
+            <h3 class="project-title">To-Do List App</h3>
+            <p class="project-desc">A task management web application with add, edit, delete and completed task functionality using Local Storage.</p>
+            <div class="tag-row">
+              <span class="chip">HTML</span>
+              <span class="chip">CSS</span>
+              <span class="chip">JavaScript</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="proj-link violet">View <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+              <a href="#" class="proj-link muted">Code <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== CONTACT ====== -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="reveal">
+        <p class="eyebrow">// contact</p>
+        <h2 class="section-heading">$ send-message --to=tooba</h2>
+        <p class="body-text muted" style="margin-top:0.5rem;max-width:440px">
+          Open to internships, collaborations, or just talking about code. Reach out below.
+        </p>
+      </div>
+      <div class="contact-grid">
+        <div class="reveal code-panel" style="padding:1.5rem;transition-delay:0.05s">
+          <div class="form-group">
+            <input class="input-field" type="text" placeholder="$ your_name" required aria-label="Your name" />
+          </div>
+          <div class="form-group">
+            <input class="input-field" type="email" placeholder="$ your_email" required aria-label="Your email" />
+          </div>
+          <div class="form-group">
+            <textarea class="input-field" rows="4" placeholder="$ message.txt" required aria-label="Your message"></textarea>
+          </div>
+          <button class="btn-primary w-full" id="sendBtn" type="button" onclick="handleSend(this)">
+            Send Message
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+        <div class="contact-info reveal" style="transition-delay:0.12s">
+          <a href="mailto:developertooba34@gmail.com" class="contact-link">
+            <svg width="16" height="16" fill="none" stroke="var(--violet-400)" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span class="mono muted" style="font-size:0.88rem">developertooba34@gmail.com</span>
+          </a>
+          <a href="https://github.com/Tooba-112" class="contact-link">
+            <svg width="16" height="16" fill="none" stroke="var(--violet-400)" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 
+6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            <span class="mono muted" style="font-size:0.88rem">github.com/Tooba-112</span>
+          </a>
+          <a href="https://www.linkedin.com/in/developer-tooba" class="contact-link">
+            <svg width="16" height="16" fill="none" stroke="var(--violet-400)" stroke-width="2" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            <span class="mono muted" style="font-size:0.88rem">linkedin.com/in/developer-tooba</span>
+          <div class="code-panel" style="padding:1rem;margin-top:0.5rem">
+          <p class="mono muted" style="font-size:0.8rem;display:flex;align-items:center;gap:0.5rem">
+            </a>
+              <svg width="13" height="13" fill="none" stroke="var(--gold-300)" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              Currently exploring frontend &amp; AI
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span class="mono muted" style="font-size:0.78rem">© 2026 Developer Tooba. Built with HTML, CSS & JS.</span>
+      <span class="mono muted" style="font-size:0.78rem">Designed & Developed by Tooba Bilal, made for the web.</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
