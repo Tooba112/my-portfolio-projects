@@ -1,0 +1,98 @@
+<div class="dashboard-wrapper">
+
+  <!-- ── Top Header ── -->
+  <header class="dashboard-header">
+    <div class="header-brand">
+      <div class="header-logo">AF</div>
+      <div>
+        <div style="font-size:1rem;font-weight:700;color:#fff;">AdFlow Pro</div>
+        <div class="header-subtitle">Moderator Portal</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-user">
+        <div class="user-avatar">{{ user?.name?.charAt(0)?.toUpperCase() }}</div>
+        <span class="user-name">{{ user?.name }}</span>
+      </div>
+      <button class="btn-logout" (click)="logout()">&#x2192; Logout</button>
+    </div>
+  </header>
+
+  <!-- ── Summary Stats ── -->
+  <div class="analytics-row">
+    <div class="stat-card">
+      <div class="stat-icon amber">&#9203;</div>
+      <div class="stat-body">
+        <div class="stat-value">{{ pendingGigs.length }}</div>
+        <div class="stat-label">Pending Review</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">&#9989;</div>
+      <div class="stat-body">
+        <div class="stat-value">{{ approvedCount }}</div>
+        <div class="stat-label">Approved Today</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon red">&#10060;</div>
+      <div class="stat-body">
+        <div class="stat-value">{{ rejectedCount }}</div>
+        <div class="stat-label">Rejected Today</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Pending Gigs Section ── -->
+  <div class="tab-content">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Gigs Pending Moderation</div>
+        <div class="section-subtitle">Review and approve or reject provider submissions</div>
+      </div>
+      <button class="btn-secondary" (click)="loadPendingGigs()">&#8635; Refresh</button>
+    </div>
+
+    <div class="table-card" *ngIf="pendingGigs.length > 0; else noPending">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Provider</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let gig of pendingGigs">
+            <td class="td-bold">{{ gig.title }}</td>
+            <td class="desc-cell">{{ gig.description }}</td>
+            <td><span class="category-badge">{{ gig.category }}</span></td>
+            <td class="amount-cell">${{ gig.price }}</td>
+            <td>
+              <div class="avatar-cell">
+                <div class="avatar-sm">{{ gig.provider?.name?.charAt(0)?.toUpperCase() }}</div>
+                <span>{{ gig.provider?.name }}</span>
+              </div>
+            </td>
+            <td>
+              <button class="btn-sm btn-success" (click)="approveGig(gig._id)">&#9989; Approve</button>
+              <button class="btn-sm btn-danger"  (click)="rejectGig(gig._id)">&#10060; Reject</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #noPending>
+      <div class="empty-state">
+        <div class="empty-icon">&#9989;</div>
+        <p>All caught up!</p>
+        <small>No gigs are pending review right now</small>
+      </div>
+    </ng-template>
+  </div>
+
+</div>

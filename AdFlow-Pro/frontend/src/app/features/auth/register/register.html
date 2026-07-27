@@ -1,0 +1,61 @@
+<div class="auth-wrapper">
+  <div class="auth-card">
+
+    <div class="brand">
+      <h1>AdFlow Pro</h1>
+      <p>Create your account</p>
+    </div>
+
+    <form class="auth-form" (ngSubmit)="onRegister()">
+
+      <div class="input-group">
+        <label>Name</label>
+        <input
+          type="text"
+          placeholder="Enter your name"
+          [(ngModel)]="name"
+          name="name"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label>Email</label>
+        <input
+          type="email"
+          placeholder="Enter your email"
+          [(ngModel)]="email"
+          name="email"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <input
+          type="password"
+          placeholder="Enter your password"
+          [(ngModel)]="password"
+          name="password"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label>Role</label>
+        <select [(ngModel)]="role" name="role">
+          <option value="client">Client</option>
+          <option value="provider">Provider</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-primary">Register</button>
+
+      <p class="switch">
+        Already have an account? <a routerLink="/login">Login</a>
+      </p>
+
+    </form>
+
+  </div>
+</div>

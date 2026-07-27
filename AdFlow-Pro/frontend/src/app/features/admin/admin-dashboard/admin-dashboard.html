@@ -1,0 +1,261 @@
+<div class="dashboard-wrapper">
+
+  <!-- ── Top Header ── -->
+  <header class="dashboard-header">
+    <div class="header-brand">
+      <div class="header-logo">AF</div>
+      <div>
+        <div style="font-size:1rem;font-weight:700;color:#fff;">AdFlow Pro</div>
+        <div class="header-subtitle">Admin Portal</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-user">
+        <div class="user-avatar">{{ user?.name?.charAt(0)?.toUpperCase() }}</div>
+        <span class="user-name">{{ user?.name }}</span>
+      </div>
+      <button class="btn-logout" (click)="logout()">&#x2192; Logout</button>
+    </div>
+  </header>
+
+  <!-- ── Summary Stats ── -->
+  <div class="analytics-row">
+    <div class="stat-card">
+      <div class="stat-icon blue">&#128101;</div>
+      <div class="stat-body">
+        <div class="stat-value">{{ totalUsers }}</div>
+        <div class="stat-label">Total Users</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon purple">&#128203;</div>
+      <div class="stat-body">
+        <div class="stat-value">{{ totalOrders }}</div>
+        <div class="stat-label">Total Orders</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon amber">&#128176;</div>
+      <div class="stat-body">
+        <div class="stat-value">{{ totalPayments }}</div>
+        <div class="stat-label">Total Payments</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">&#9989;</div>
+      <div class="stat-body">
+        <div class="stat-value">{{ verifiedPayments }}</div>
+        <div class="stat-label">Verified Payments</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Tab Navigation ── -->
+  <div class="tabs-wrapper">
+    <div class="tabs">
+      <button [class.active]="activeTab === 'users'"      (click)="activeTab = 'users'">
+        &#128101; Users
+      </button>
+      <button [class.active]="activeTab === 'payments'"   (click)="activeTab = 'payments'; loadPayments()">
+        &#128176; Payments
+      </button>
+      <button [class.active]="activeTab === 'orders'"     (click)="activeTab = 'orders'; loadOrders()">
+        &#128203; Orders
+      </button>
+      <button [class.active]="activeTab === 'categories'" (click)="activeTab = 'categories'; loadCategories()">
+        &#127991; Categories
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Users Tab ── -->
+  <div *ngIf="activeTab === 'users'" class="tab-content">
+    <div class="section-header">
+      <div>
+        <div class="section-title">All Users</div>
+        <div class="section-subtitle">Manage user accounts and roles</div>
+      </div>
+    </div>
+
+    <div class="table-card" *ngIf="users.length > 0; else noUsers">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Email</th>
+            <th>Current Role</th>
+            <th>Change Role</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of users">
+            <td>
+              <div class="avatar-cell">
+                <div class="avatar-sm">{{ u.name?.charAt(0)?.toUpperCase() }}</div>
+                <span class="td-bold">{{ u.name }}</span>
+              </div>
+            </td>
+            <td style="color:var(--text-3);font-size:.825rem;">{{ u.email }}</td>
+            <td><span class="role-badge" [class]="u.role">{{ u.role }}</span></td>
+            <td>
+              <select class="role-select" [value]="u.role" (change)="updateRole(u._id, $any($event.target).value)">
+                <option value="client">Client</option>
+                <option value="provider">Provider</option>
+                <option value="moderator">Moderator</option>
+                <option value="admin">Admin</option>
+              </select>
+            </td>
+            <td>
+              <button class="btn-sm btn-danger" (click)="deleteUser(u._id)">&#128465; Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #noUsers>
+      <div class="empty-state">
+        <div class="empty-icon">&#128101;</div>
+        <p>No users found</p>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- ── Payments Tab ── -->
+  <div *ngIf="activeTab === 'payments'" class="tab-content">
+    <div class="section-header">
+      <div>
+        <div class="section-title">All Payments</div>
+        <div class="section-subtitle">Verify pending client payments</div>
+      </div>
+    </div>
+
+    <div class="table-card" *ngIf="payments.length > 0; else noPayments">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Amount</th>
+            <th>Method</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let payment of payments">
+            <td>
+              <div class="avatar-cell">
+                <div class="avatar-sm">{{ payment.client?.name?.charAt(0)?.toUpperCase() }}</div>
+                <span class="td-bold">{{ payment.client?.name }}</span>
+              </div>
+            </td>
+            <td class="amount-cell">${{ payment.amount }}</td>
+            <td>{{ payment.paymentMethod }}</td>
+            <td><span class="status-badge" [class]="payment.status">{{ payment.status }}</span></td>
+            <td>
+              <button class="btn-sm btn-success" *ngIf="payment.status === 'pending'" (click)="verifyPayment(payment._id)">
+                &#9989; Verify
+              </button>
+              <span class="verified-label" *ngIf="payment.status === 'verified'">&#9989; Verified</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #noPayments>
+      <div class="empty-state">
+        <div class="empty-icon">&#128176;</div>
+        <p>No payments found</p>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- ── Orders Tab ── -->
+  <div *ngIf="activeTab === 'orders'" class="tab-content">
+    <div class="section-header">
+      <div>
+        <div class="section-title">All Orders</div>
+        <div class="section-subtitle">Platform-wide order overview</div>
+      </div>
+    </div>
+
+    <div class="table-card" *ngIf="orders.length > 0; else noOrders">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Gig</th>
+            <th>Client</th>
+            <th>Provider</th>
+            <th>Amount</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders">
+            <td class="td-bold">{{ order.gig?.title }}</td>
+            <td>{{ order.client?.name }}</td>
+            <td>{{ order.provider?.name }}</td>
+            <td class="td-bold">${{ order.amount }}</td>
+            <td><span class="status-badge" [class]="order.status">{{ order.status }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #noOrders>
+      <div class="empty-state">
+        <div class="empty-icon">&#128203;</div>
+        <p>No orders found</p>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- ── Categories Tab ── -->
+  <div *ngIf="activeTab === 'categories'" class="tab-content">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Categories</div>
+        <div class="section-subtitle">Manage gig categories available to providers</div>
+      </div>
+    </div>
+
+    <div class="add-form">
+      <input
+        type="text"
+        [(ngModel)]="newCategoryName"
+        placeholder="New category name (e.g. Web Design)"
+      />
+      <button class="btn-primary" (click)="addCategory()">&#43; Add Category</button>
+    </div>
+
+    <div class="table-card" *ngIf="categories.length > 0; else noCategories">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Category Name</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cat of categories; let i = index">
+            <td style="color:var(--text-3);width:48px;">{{ i + 1 }}</td>
+            <td class="td-bold">
+              <span class="category-badge">{{ cat.name }}</span>
+            </td>
+            <td>
+              <button class="btn-sm btn-danger" (click)="deleteCategory(cat._id)">&#128465; Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #noCategories>
+      <div class="empty-state">
+        <div class="empty-icon">&#127991;</div>
+        <p>No categories yet</p>
+        <small>Add your first category above</small>
+      </div>
+    </ng-template>
+  </div>
+
+</div>

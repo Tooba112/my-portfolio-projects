@@ -1,0 +1,192 @@
+<div class="dashboard-wrapper">
+
+  <!-- ── Top Header ── -->
+  <header class="dashboard-header">
+    <div class="header-brand">
+      <div class="header-logo">AF</div>
+      <div>
+        <div style="font-size:1rem;font-weight:700;color:#fff;">AdFlow Pro</div>
+        <div class="header-subtitle">Provider Portal</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-user">
+        <div class="user-avatar">{{ user?.name?.charAt(0)?.toUpperCase() }}</div>
+        <span class="user-name">{{ user?.name }}</span>
+      </div>
+      <button class="btn-logout" (click)="logout()">&#x2192; Logout</button>
+    </div>
+  </header>
+
+  <!-- ── Summary Stats ── -->
+  <div class="analytics-row">
+    <div class="stat-card">
+      <div class="stat-icon purple">&#128196;</div>
+      <div class="stat-body">
+        <div class="stat-value">{{ totalGigs }}</div>
+        <div class="stat-label">Total Gigs</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon blue">&#128203;</div>
+      <div class="stat-body">
+        <div class="stat-value">{{ totalOrders }}</div>
+        <div class="stat-label">Total Orders</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">&#9989;</div>
+      <div class="stat-body">
+        <div class="stat-value">{{ completedOrders }}</div>
+        <div class="stat-label">Completed</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon amber">&#128176;</div>
+      <div class="stat-body">
+        <div class="stat-value">${{ totalEarnings }}</div>
+        <div class="stat-label">Total Earnings</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Tab Navigation ── -->
+  <div class="tabs-wrapper">
+    <div class="tabs">
+      <button [class.active]="activeTab === 'gigs'" (click)="activeTab = 'gigs'">
+        &#128196; My Gigs
+      </button>
+      <button [class.active]="activeTab === 'orders'" (click)="activeTab = 'orders'; loadProviderOrders()">
+        &#128203; Orders
+      </button>
+    </div>
+  </div>
+
+  <!-- ── My Gigs ── -->
+  <div *ngIf="activeTab === 'gigs'" class="tab-content">
+    <div class="section-header">
+      <div>
+        <div class="section-title">My Gigs</div>
+        <div class="section-subtitle">Manage your service listings</div>
+      </div>
+      <button class="btn-primary" style="width:auto;margin-top:0;" (click)="showGigForm = true">
+        &#43; Create Gig
+      </button>
+    </div>
+
+    <div class="table-card" *ngIf="myGigs.length > 0; else noGigs">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let gig of myGigs">
+            <td class="td-bold">{{ gig.title }}</td>
+            <td><span class="category-badge">{{ gig.category }}</span></td>
+            <td class="td-bold">${{ gig.price }}</td>
+            <td><span class="status-badge" [class]="gig.status">{{ gig.status }}</span></td>
+            <td>
+              <button class="btn-sm btn-danger" (click)="deleteGig(gig._id)">&#128465; Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #noGigs>
+      <div class="empty-state">
+        <div class="empty-icon">&#128196;</div>
+        <p>No gigs created yet</p>
+        <small>Click "Create Gig" to list your first service</small>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- ── Orders ── -->
+  <div *ngIf="activeTab === 'orders'" class="tab-content">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Orders for My Gigs</div>
+        <div class="section-subtitle">Review and complete client orders</div>
+      </div>
+    </div>
+
+    <div class="table-card" *ngIf="providerOrders.length > 0; else noOrders">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Gig</th>
+            <th>Client</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of providerOrders">
+            <td class="td-bold">{{ order.gig?.title }}</td>
+            <td>
+              <div class="avatar-cell">
+                <div class="avatar-sm">{{ order.client?.name?.charAt(0)?.toUpperCase() }}</div>
+                <span>{{ order.client?.name }}</span>
+              </div>
+            </td>
+            <td class="amount-cell">${{ order.amount }}</td>
+            <td><span class="status-badge" [class]="order.status">{{ order.status }}</span></td>
+            <td>
+              <button class="btn-sm btn-success" *ngIf="order.status === 'active'" (click)="markComplete(order._id)">
+                &#9989; Complete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #noOrders>
+      <div class="empty-state">
+        <div class="empty-icon">&#128203;</div>
+        <p>No orders yet</p>
+        <small>Orders will appear here once clients purchase your gigs</small>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- ── Create Gig Modal ── -->
+  <div class="modal-overlay" *ngIf="showGigForm">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-icon">&#128196;</div>
+        <h3>Create New Gig</h3>
+      </div>
+      <div class="input-group">
+        <label>Title</label>
+        <input type="text" [(ngModel)]="gigForm.title" placeholder="e.g. Professional Logo Design" />
+      </div>
+      <div class="input-group">
+        <label>Description</label>
+        <textarea [(ngModel)]="gigForm.description" rows="3" placeholder="Describe what you offer..."></textarea>
+      </div>
+      <div class="input-group">
+        <label>Price (USD)</label>
+        <input type="number" [(ngModel)]="gigForm.price" placeholder="0" />
+      </div>
+      <div class="input-group">
+        <label>Category</label>
+        <select [(ngModel)]="gigForm.category">
+          <option value="">Select a category</option>
+          <option *ngFor="let cat of categories" [value]="cat.name">{{ cat.name }}</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-primary" (click)="createGig()">Submit for Review</button>
+        <button class="btn-secondary" (click)="showGigForm = false">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+</div>

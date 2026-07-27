@@ -1,0 +1,243 @@
+<div class="dashboard-wrapper">
+
+  <!-- ── Top Header ── -->
+  <header class="dashboard-header">
+    <div class="header-brand">
+      <div class="header-logo">AF</div>
+      <div>
+        <div class="header-title">AdFlow Pro</div>
+        <div class="header-subtitle">Client Portal</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-user">
+        <div class="user-avatar">{{ user?.name?.charAt(0)?.toUpperCase() }}</div>
+        <span class="user-name">{{ user?.name }}</span>
+      </div>
+      <button class="btn-logout" (click)="logout()">&#x2192; Logout</button>
+    </div>
+  </header>
+
+  <!-- ── Summary Stats ── -->
+  <div class="analytics-row">
+    <div class="stat-card">
+      <div class="stat-icon blue">&#128722;</div>
+      <div class="stat-body">
+        <div class="stat-value">{{ gigs.length }}</div>
+        <div class="stat-label">Available Gigs</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon purple">&#128203;</div>
+      <div class="stat-body">
+        <div class="stat-value">{{ orders.length }}</div>
+        <div class="stat-label">My Orders</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">&#128176;</div>
+      <div class="stat-body">
+        <div class="stat-value">{{ payments.length }}</div>
+        <div class="stat-label">Payments</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon amber">&#9989;</div>
+      <div class="stat-body">
+        <div class="stat-value">{{ categories.length }}</div>
+        <div class="stat-label">Categories</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Tab Navigation ── -->
+  <div class="tabs-wrapper">
+    <div class="tabs">
+      <button [class.active]="activeTab === 'gigs'" (click)="activeTab = 'gigs'">
+        &#128722; Browse Gigs
+      </button>
+      <button [class.active]="activeTab === 'orders'" (click)="activeTab = 'orders'; loadOrders()">
+        &#128203; My Orders
+      </button>
+      <button [class.active]="activeTab === 'payments'" (click)="activeTab = 'payments'; loadPayments()">
+        &#128176; My Payments
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Browse Gigs ── -->
+  <div *ngIf="activeTab === 'gigs'" class="tab-content">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Browse Gigs</div>
+        <div class="section-subtitle">Find and order services from providers</div>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <label>Filter by category:</label>
+      <select class="filter-select" [(ngModel)]="selectedCategory" (change)="filterByCategory()">
+        <option value="">All Categories</option>
+        <option *ngFor="let cat of categories" [value]="cat.name">{{ cat.name }}</option>
+      </select>
+    </div>
+
+    <div class="gig-grid" *ngIf="gigs.length > 0; else noGigs">
+      <div class="gig-card" *ngFor="let gig of gigs">
+        <div class="gig-card-header">
+          <h3>{{ gig.title }}</h3>
+          <span class="gig-price-tag">${{ gig.price }}</span>
+        </div>
+        <p class="gig-desc">{{ gig.description }}</p>
+        <div class="gig-footer">
+          <span class="category-badge">{{ gig.category }}</span>
+          <span class="provider-name">by {{ gig.provider?.name }}</span>
+        </div>
+        <button class="btn-primary" (click)="placeOrder(gig)">&#128722; Order Now</button>
+      </div>
+    </div>
+    <ng-template #noGigs>
+      <div class="empty-state">
+        <div class="empty-icon">&#128722;</div>
+        <p>No gigs available right now</p>
+        <small>Check back later or try a different category</small>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- ── My Orders ── -->
+  <div *ngIf="activeTab === 'orders'" class="tab-content">
+    <div class="section-header">
+      <div>
+        <div class="section-title">My Orders</div>
+        <div class="section-subtitle">Track and manage your service orders</div>
+      </div>
+    </div>
+
+    <div class="table-card" *ngIf="orders.length > 0; else noOrders">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Gig</th>
+            <th>Provider</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders">
+            <td class="td-bold">{{ order.gig?.title }}</td>
+            <td>{{ order.provider?.name }}</td>
+            <td class="td-bold">${{ order.amount }}</td>
+            <td><span class="status-badge" [class]="order.status">{{ order.status }}</span></td>
+            <td>
+              <button class="btn-sm btn-primary" *ngIf="order.status === 'pending'" (click)="openPaymentForm(order)">
+                &#128176; Pay
+              </button>
+              <button class="btn-sm btn-secondary" *ngIf="order.status === 'completed'" (click)="openReviewForm(order)">
+                &#11088; Review
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #noOrders>
+      <div class="empty-state">
+        <div class="empty-icon">&#128203;</div>
+        <p>No orders yet</p>
+        <small>Browse gigs and place your first order</small>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- ── My Payments ── -->
+  <div *ngIf="activeTab === 'payments'" class="tab-content">
+    <div class="section-header">
+      <div>
+        <div class="section-title">My Payments</div>
+        <div class="section-subtitle">Payment history and verification status</div>
+      </div>
+    </div>
+
+    <div class="table-card" *ngIf="payments.length > 0; else noPayments">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Amount</th>
+            <th>Method</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let payment of payments">
+            <td style="font-family:monospace;font-size:.78rem;color:var(--text-3);">
+              {{ (payment.order?._id || payment.order) | slice:0:16 }}...
+            </td>
+            <td class="td-bold">${{ payment.amount }}</td>
+            <td>{{ payment.paymentMethod }}</td>
+            <td><span class="status-badge" [class]="payment.status">{{ payment.status }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #noPayments>
+      <div class="empty-state">
+        <div class="empty-icon">&#128176;</div>
+        <p>No payments yet</p>
+        <small>Payments will appear here after you place an order</small>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- ── Payment Modal ── -->
+  <div class="modal-overlay" *ngIf="showPaymentForm">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-icon">&#128176;</div>
+        <h3>Submit Payment</h3>
+      </div>
+      <div class="input-group">
+        <label>Amount</label>
+        <input type="number" [(ngModel)]="paymentForm.amount" readonly />
+      </div>
+      <div class="input-group">
+        <label>Payment Method</label>
+        <select [(ngModel)]="paymentForm.paymentMethod">
+          <option value="bank_transfer">Bank Transfer</option>
+          <option value="cash">Cash</option>
+          <option value="mobile_banking">Mobile Banking</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-primary" (click)="submitPayment()">Confirm Payment</button>
+        <button class="btn-secondary" (click)="showPaymentForm = false">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Review Modal ── -->
+  <div class="modal-overlay" *ngIf="showReviewForm">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-icon">&#11088;</div>
+        <h3>Leave a Review</h3>
+      </div>
+      <div class="input-group">
+        <label>Rating (1 – 5)</label>
+        <input type="number" [(ngModel)]="reviewForm.rating" min="1" max="5" />
+      </div>
+      <div class="input-group">
+        <label>Comment</label>
+        <textarea [(ngModel)]="reviewForm.comment" rows="3" placeholder="Share your experience..."></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-primary" (click)="submitReview()">Submit Review</button>
+        <button class="btn-secondary" (click)="showReviewForm = false">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+</div>
